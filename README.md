@@ -24,3 +24,5 @@ male to female jumper wires
 
 Pololu RP5/Rover 5 Expansion Plate RRC07B (Wide) Transparent Clear
 
+Video of working project
+https://youtu.be/GGrvh3NX90Y 
