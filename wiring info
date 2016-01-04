@@ -1,0 +1,23 @@
+#define encoderA 2
+#define encoderB 3 // Only use one interrupt in this example
+#define encoderC 19
+#define encoderD 18 // Only use one interrupt in this example
+volatile int Lcount;
+volatile int Rcount;
+int Lcountsaved;
+int Rcountsaved;
+
+int speedch1 = 9; // left front
+int speedch2 = 10; // left back
+int speedch3 = 11; // right front
+int speedch4 = 12; // right back
+// direction pins 
+int dirch1 = 44; // left front
+int dirch2 = 45; // left back
+int dirch3 = 42; // right front
+int dirch4 = 43; // right back
+
+int curch1 = A1; // left front
+int curch2 = A2; // left back
+int curch3 = A3; // right front
+int curch4 = A4; // right back
