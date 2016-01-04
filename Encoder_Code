@@ -1,0 +1,74 @@
+// Interrupt information // pins may be different on uno<br>// 0 on pin 2
+// 1 on pin 3
+
+#define encoderA 2
+#define encoderB 3 // Only use one interrupt in this example
+volatile int count;
+
+int speedch1 = 9; // left front
+int speedch2 = 10; // left back
+int speedch3 = 11; // right front
+int speedch4 = 12; // right back
+// direction pins 
+int dirch1 = 44; // left front
+int dirch2 = 45; // left back
+int dirch3 = 42; // right front
+int dirch4 = 43; // right back
+
+int curch1 = A1; // left front
+int curch2 = A2; // left back
+int curch3 = A3; // right front
+int curch4 = A4; // right back
+int TIME; //time the command is for
+int SPEED;// 0 - 255 motor speed
+
+void setup()
+{
+Serial.begin(9600);
+count=0;
+pinMode(dirch1,OUTPUT);
+pinMode(dirch2,OUTPUT);
+pinMode(dirch3,OUTPUT);
+pinMode(dirch4,OUTPUT);
+
+pinMode(speedch1,OUTPUT);
+pinMode(speedch2,OUTPUT);
+pinMode(speedch3,OUTPUT);
+pinMode(speedch4,OUTPUT);
+pinMode(encoderA, INPUT);
+pinMode(encoderB, INPUT); attachInterrupt(0, handleEncoder, CHANGE);
+
+}
+
+void loop()
+{
+ delay(1000);
+  (SPEED = 200);
+   forward();
+  if (count > 10) Serial.println(count); 
+}
+
+void handleEncoder()
+{
+if(digitalRead(encoderA) == digitalRead(encoderB))
+{ count++;
+}
+else
+{ count--;
+}
+
+}
+void forward()
+{  
+     
+   digitalWrite(dirch1,LOW);
+   digitalWrite(dirch2,HIGH); 
+   analogWrite(speedch1,SPEED);
+   analogWrite(speedch2,SPEED);
+   
+   if (count > 500){ 
+   
+   analogWrite(speedch1,0);
+   analogWrite(speedch2,0);
+  }
+}
