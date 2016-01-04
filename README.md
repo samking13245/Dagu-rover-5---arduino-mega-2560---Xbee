@@ -2,6 +2,7 @@
 code for arduino mega 2560 to run Xbee and Dagu rover 5
 
 Project transferred from my instructables account http://www.instructables.com/id/Dagu-rover-5-arduino-mega-2560-Xbee/
+Images and more info can be found there.
 
 Items needed for project
 
