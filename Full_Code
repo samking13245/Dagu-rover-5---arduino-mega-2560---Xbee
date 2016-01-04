@@ -1,0 +1,255 @@
+//ROBOT CAR CODE 004
+// commands
+// forward()
+// backward()
+// rotate_left()
+// rotate_right()
+
+//notes 
+//   FULL 360 rotate
+//  (TIME = 12000);   //delay time
+//  (SPEED = 200);   //speed 0-255
+//  rotate_right(); 
+int incomingByte = 0; //  for incoming serial data 
+//speed pins 0 - 255 
+
+#define encoderA 2
+#define encoderB 3 // Only use one interrupt in this example
+#define encoderC 19
+#define encoderD 18 // Only use one interrupt in this example
+volatile int Lcount;
+volatile int Rcount;
+int Lcountsaved;
+int Rcountsaved;
+
+int speedch1 = 9; // left front
+int speedch2 = 10; // left back
+int speedch3 = 11; // right front
+int speedch4 = 12; // right back
+// direction pins 
+int dirch1 = 44; // left front
+int dirch2 = 45; // left back
+int dirch3 = 42; // right front
+int dirch4 = 43; // right back
+
+int curch1 = A1; // left front
+int curch2 = A2; // left back
+int curch3 = A3; // right front
+int curch4 = A4; // right back
+int TIME; //time the command is for
+int SPEED;// 0 - 255 motor speed
+
+int count;
+int check1; //see if subcomand has run
+int check2; //see if subcomand has run
+int check3; //see if subcomand has run
+int check4; //see if subcomand has run
+int check5; //see if subcomand has run
+
+void setup() {                
+Lcount=0;
+Rcount=0;
+
+  // initialize the digital pin as an output.
+pinMode(dirch1,OUTPUT);
+pinMode(dirch2,OUTPUT);
+pinMode(dirch3,OUTPUT);
+pinMode(dirch4,OUTPUT);
+
+pinMode(speedch1,OUTPUT);
+pinMode(speedch2,OUTPUT);
+pinMode(speedch3,OUTPUT);
+pinMode(speedch4,OUTPUT);
+
+pinMode(encoderA, INPUT);
+pinMode(encoderB, INPUT); attachInterrupt(0, LhandleEncoder, CHANGE);
+pinMode(encoderC, INPUT);
+pinMode(encoderD, INPUT); attachInterrupt(5, RhandleEncoder, CHANGE);
+
+Serial2.begin(9600);
+Serial.begin(9600);
+
+analogWrite(speedch1,0);// stop all
+analogWrite(speedch2,0);// stop all
+analogWrite(speedch3,0);// stop all
+analogWrite(speedch4,0);// stop all
+
+count = 0;
+(SPEED = 200);
+
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+
+  
+  if (Serial2.available() > 0) {
+    // read the incoming byte:
+   incomingByte = Serial2.read();               
+  }
+  
+  if(incomingByte == 10 && check1 == 0) forward();
+  else if(incomingByte == 11 && check2 == 0) rotate_right();
+  else if(incomingByte == 12 && check3 == 0) backward();
+  else if(incomingByte == 13 && check4 == 0) rotate_left();
+  else if(incomingByte == 14 && check5 == 0) pause();
+
+// if(incomingByte == 16){
+// if (Lcount != Lcountsaved && Rcount != Rcountsaved)
+ Serial2.print(Lcount,DEC);//send encoder data
+ Serial2.print(",");
+ Serial2.print(Rcount,DEC);
+ Serial2.print(",");
+ Serial2.println();
+ 
+ incomingByte = 1;
+// Lcountsaved = Lcount;
+ //Rcountsaved = Rcount;
+// }
+ }
+ 
+  
+void LhandleEncoder()
+{
+if(digitalRead(encoderA) == digitalRead(encoderB))
+{ Lcount++;
+}
+else
+{ Lcount--;
+}
+}
+
+void RhandleEncoder()
+{
+if(digitalRead(encoderC) == digitalRead(encoderD))
+{ Rcount++;
+}
+else
+{ Rcount--;
+}
+}
+
+void forward()
+{             
+   check2 = 0;
+   check3 = 0;
+   check4 = 0;
+   check5 = 0;
+   
+   analogWrite(speedch1,0);
+   analogWrite(speedch2,0);
+   analogWrite(speedch3,0);
+   analogWrite(speedch4,0);
+ 
+   delay(100);
+ 
+   digitalWrite(dirch1,LOW);
+   digitalWrite(dirch2,HIGH); 
+   digitalWrite(dirch3,LOW);
+   digitalWrite(dirch4,HIGH);
+   analogWrite(speedch1,SPEED);
+   analogWrite(speedch2,SPEED);
+   analogWrite(speedch3,SPEED);
+   analogWrite(speedch4,SPEED);
+   
+   check1 = 1;
+
+}
+
+void backward()
+{  
+   check1 = 0; 
+   check2 = 0; 
+   check4 = 0;
+   check5 = 0;
+   
+   analogWrite(speedch1,0);
+   analogWrite(speedch2,0);
+   analogWrite(speedch3,0);
+   analogWrite(speedch4,0);
+   
+   delay(100);
+ 
+   digitalWrite(dirch1,HIGH);
+   digitalWrite(dirch2,LOW); 
+   digitalWrite(dirch3,HIGH);
+   digitalWrite(dirch4,LOW);
+   analogWrite(speedch1,SPEED);
+   analogWrite(speedch2,SPEED);
+   analogWrite(speedch3,SPEED);
+   analogWrite(speedch4,SPEED);
+
+   check3 = 1;
+  
+   
+
+}
+
+void rotate_right()
+{  
+   check1 = 0;
+   check3 = 0;
+   check4 = 0;
+   check5 = 0;
+   
+   analogWrite(speedch1,0);
+   analogWrite(speedch2,0);
+   analogWrite(speedch3,0);
+   analogWrite(speedch4,0);
+   
+   delay(100); //wait to stop
+   
+   digitalWrite(dirch1,LOW);
+   digitalWrite(dirch2,HIGH); 
+   digitalWrite(dirch3,HIGH);
+   digitalWrite(dirch4,LOW);
+   analogWrite(speedch1,SPEED);
+   analogWrite(speedch2,SPEED);
+   analogWrite(speedch3,SPEED);
+   analogWrite(speedch4,SPEED);
+   
+   check2 = 1;
+
+}
+
+void rotate_left()
+{  
+   check1 = 0;
+   check2 = 0;
+   check3 = 0;
+   check5 = 0;  
+   
+   analogWrite(speedch1,0);
+   analogWrite(speedch2,0);
+   analogWrite(speedch3,0);
+   analogWrite(speedch4,0);
+   
+   delay(100);
+   
+   digitalWrite(dirch1,HIGH);
+   digitalWrite(dirch2,LOW); 
+   digitalWrite(dirch3,LOW);
+   digitalWrite(dirch4,HIGH);
+   analogWrite(speedch1,SPEED);
+   analogWrite(speedch2,SPEED);
+   analogWrite(speedch3,SPEED);
+   analogWrite(speedch4,SPEED);
+  
+  check4 = 1;
+
+}
+
+void pause()
+{ 
+   check1 = 0;
+   check2 = 0;
+   check3 = 0;
+   check4 = 0;  
+  
+   analogWrite(speedch1,0);
+   analogWrite(speedch2,0);
+   analogWrite(speedch3,0);
+   analogWrite(speedch4,0);
+  
+  check5 = 1; 
+}
