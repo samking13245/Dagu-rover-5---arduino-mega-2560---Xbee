@@ -1,0 +1,50 @@
+//ROBOT CAR CODE 001
+
+int speedch1 = 9;
+int speedch2 = 10;
+int speedch3 = 11;
+int speedch4 = 12;
+
+int dirch1 = 44;
+int dirch2 = 45;
+int dirch3 = 42;
+int dirch4 = 43;
+
+int curch1 = A1;
+int curch2 = A2;
+int curch3 = A3;
+int curch4 = A4;
+
+void setup() {                
+  // initialize the digital pin as an output.
+pinMode(dirch1,OUTPUT);
+pinMode(dirch2,OUTPUT);
+pinMode(dirch3,OUTPUT);
+pinMode(dirch4,OUTPUT);
+
+pinMode(speedch1,OUTPUT);
+pinMode(speedch2,OUTPUT);
+pinMode(speedch3,OUTPUT);
+pinMode(speedch4,OUTPUT);
+
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  delay(2000);
+   digitalWrite(dirch1,LOW); // direction motor spins 
+   digitalWrite(dirch2,HIGH); // 1 and 2 are on the same side but fight against each other.
+   digitalWrite(dirch3,LOW);
+   digitalWrite(dirch4,HIGH);
+   analogWrite(speedch1,200); // speed PWM 0 - 255 
+   analogWrite(speedch2,200);
+   analogWrite(speedch3,200);
+   analogWrite(speedch4,200);
+   
+   delay(5000);//how long the motors run
+   
+   analogWrite(speedch1,0); // stop
+   analogWrite(speedch2,0);
+   analogWrite(speedch3,0);
+   analogWrite(speedch4,0);
+}
